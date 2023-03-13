@@ -24,7 +24,7 @@ Second, even if the programmer did notice the warning and treat it as a fatal er
 
 ### How to build and run the reproducer
 
-CMake build system is provided for your convenience on Windows. Actually all that is needed is `nvcc test.cu -o TestMixedFloatUB.exe` but typically the paths for `cl.exe` are not set up correctly for this to work directly.
+Build with CMake as usual. There is nothing unusual about the build except for the optional `--expt-relaxed-constexpr` flag, see the Linux section below.
 
 Output when bug is hit:
 ```
@@ -36,7 +36,7 @@ The final value is 0, goodbye
 
 ### Linux behavior
 
-On Linux, by default the same incorrect behavior occurs. However, the warning is `warning #20013-D: calling a constexpr __host__ function("__gnu_cxx::__promote_2<T1, T2,  ::__gnu_cxx::__promote<T1, std::__is_integer<T1> ::__value> ::__type,  ::__gnu_cxx::__promote<T2, std::__is_integer<T2> ::__value> ::__type> ::__type  ::std::atan2<double, float> (T1, T2)") from a __host__ __device__ function("testDeviceFunction") is not allowed. The experimental flag '--expt-relaxed-constexpr' can be used to allow this.` Since on Linux, this is a constexpr function, adding the compile flag `--expt-relaxed-constexpr` allows the function to be executed (at compile time) in device code. With this flag, then, the code works properly and UB is not hit.
+On Linux, by default the same incorrect behavior occurs. However, the warning is `warning #20013-D: calling a constexpr __host__ function("__gnu_cxx::__promote_2<T1, T2,  ::__gnu_cxx::__promote<T1, std::__is_integer<T1> ::__value> ::__type,  ::__gnu_cxx::__promote<T2, std::__is_integer<T2> ::__value> ::__type> ::__type  ::std::atan2<double, float> (T1, T2)") from a __host__ __device__ function("testDeviceFunction") is not allowed. The experimental flag '--expt-relaxed-constexpr' can be used to allow this.` Since on Linux, this is a constexpr function, adding the compile flag `--expt-relaxed-constexpr` allows the function to be executed (at compile time) in device code. With this flag, then, the code works properly and UB is not hit. This flag does not change the behavior on Windows.
 
 ### Test platforms
 
