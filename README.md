@@ -34,9 +34,18 @@ Hello
 The final value is 0, goodbye
 ```
 
+### Linux behavior
+
+On Linux, by default the same incorrect behavior occurs. However, the warning is `warning #20013-D: calling a constexpr __host__ function("__gnu_cxx::__promote_2<T1, T2,  ::__gnu_cxx::__promote<T1, std::__is_integer<T1> ::__value> ::__type,  ::__gnu_cxx::__promote<T2, std::__is_integer<T2> ::__value> ::__type> ::__type  ::std::atan2<double, float> (T1, T2)") from a __host__ __device__ function("testDeviceFunction") is not allowed. The experimental flag '--expt-relaxed-constexpr' can be used to allow this.` Since on Linux, this is a constexpr function, adding the compile flag `--expt-relaxed-constexpr` allows the function to be executed (at compile time) in device code. With this flag, then, the code works properly and UB is not hit.
+
 ### Test platforms
 
 Windows 10 x64, Visual Studio 17 2022 v143, Windows SDK 10.0.20348.0 \
 Bug occurs (UB reached) on: CUDA 12.1, driver 531.14 \
 Bug occurs (UB reached) on: CUDA 12.0, driver 527.41
 
+Linux 5.10.0-21-amd64 #1 SMP Debian 5.10.162-1 (2023-01-21) x86_64 GNU/Linux \
+Bug occurs (UB reached) on: CUDA 11.8, driver 520.56.06 \
+Bug does NOT occur on same platform with `--expt-relaxed-constexpr` flag \
+Bug occurs (UB reached) on: CUDA 12.1, driver 530.30.02 \
+Bug does NOT occur on same platform with `--expt-relaxed-constexpr` flag
