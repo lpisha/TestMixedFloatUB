@@ -36,5 +36,7 @@ The final value is 0, goodbye
 
 ### Test platforms
 
-Bug occurs (UB reached) on: Windows 10 x64, CUDA 12.0, driver 527.41, Visual Studio 2022 v143, Windows SDK 10.0.20348.0
+Windows 10 x64, Visual Studio 17 2022 v143, Windows SDK 10.0.20348.0 \
+Bug occurs (UB reached) on: CUDA 12.1, driver 531.14 \
+Bug occurs (UB reached) on: CUDA 12.0, driver 527.41
 
